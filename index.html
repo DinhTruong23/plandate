@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Invitation 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #ff6b9d;
+        --secondary: #ffe5ec;
+        --accent: #ffd166;
+        --bg: #fff8fa;
+        --text: #4a4a4a;
+        --text-light: #7a7a7a;
+        --white: #ffffff;
+        --shadow: rgba(255, 107, 157, 0.15);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .page {
+        display: none;
+        min-height: 100vh;
+        width: 100%;
+        padding: 40px 20px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .page.active {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card {
+        background: var(--white);
+        border-radius: 24px;
+        padding: 40px 30px;
+        max-width: 480px;
+        width: 100%;
+        box-shadow: 0 10px 40px var(--shadow);
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .title {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+        color: var(--text-light);
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+
+      .btn {
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        padding: 14px 32px;
+        border: none;
+        border-radius: 24px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background: #ff477a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--secondary);
+        color: var(--primary);
+      }
+
+      .btn-secondary:hover {
+        background: #ffd6e4;
+        transform: translateY(-2px);
+      }
+
+      .btn:active {
+        transform: scale(0.96);
+      }
+
+      .btn-runaway {
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+
+      .grid-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .option-card {
+        background: var(--white);
+        border: 2px solid var(--secondary);
+        border-radius: 20px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .option-card .emoji {
+        font-size: 28px;
+      }
+
+      .option-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px var(--shadow);
+      }
+
+      .option-card.selected {
+        background: var(--secondary);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      .time-picker-wrapper {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .time-picker {
+        font-family: "Poppins", sans-serif;
+        font-size: 18px;
+        padding: 12px 20px;
+        border: 2px solid var(--secondary);
+        border-radius: 16px;
+        color: var(--primary);
+        background: var(--white);
+        outline: none;
+        cursor: pointer;
+      }
+
+      .time-picker:focus {
+        border-color: var(--primary);
+      }
+
+      .summary-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 12px;
+        text-align: left;
+        font-size: 15px;
+      }
+
+      .summary-label {
+        font-weight: 700;
+        color: var(--primary);
+        min-width: 90px;
+      }
+
+      .summary-value {
+        color: var(--text);
+        flex: 1;
+      }
+
+      .heart {
+        position: fixed;
+        color: var(--primary);
+        font-size: 20px;
+        pointer-events: none;
+        animation: floatHeart 6s linear infinite;
+        z-index: 1;
+        opacity: 0.6;
+      }
+
+      @keyframes floatHeart {
+        0% {
+          transform: translateY(100vh) scale(0.5);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.6;
+        }
+        90% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-10vh) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      .confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 100;
+        overflow: hidden;
+      }
+
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: -10px;
+        animation: confettiFall 3s ease-out forwards;
+      }
+
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      .final-message {
+        font-size: 20px;
+        color: var(--primary);
+        font-weight: 700;
+        margin-top: 20px;
+        animation: popIn 0.5s ease;
+      }
+
+      @keyframes popIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .music-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 50;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: none;
+        background: var(--white);
+        color: var(--primary);
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .music-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+      }
+
+      .music-toggle.muted {
+        opacity: 0.6;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        justify-content: center;
+      }
+
+      .btn-back {
+        background: transparent;
+        color: var(--text-light);
+        border: 2px solid #e0e0e0;
+      }
+
+      .btn-back:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 30px 20px;
+        }
+        .title {
+          font-size: 24px;
+        }
+        .grid-options {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Floating Hearts Container -->
+    <div id="hearts-container"></div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <!-- Music Toggle -->
+    <button
+      id="musicToggle"
+      class="music-toggle"
+      onclick="toggleMusic()"
+      title="Bật/Tắt nhạc nền"
+    >
+      🎵
+    </button>
+    <script>
+      document.getElementById("musicToggle").innerText = "🎵";
+    </script>
+
+    <!-- SoundCloud Player -->
+    <iframe
+      id="sc-player"
+      width="0"
+      height="0"
+      style="display: none"
+      scrolling="no"
+      frameborder="no"
+      allow="autoplay"
+      src="https://w.soundcloud.com/player/?url=https://soundcloud.com/dacolthevibeyoufeel/tang-em-doa-hoa-hong-master&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"
+    ></iframe>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+
+    <!-- Page 1: Invitation -->
+    <section id="page1" class="page active">
+      <div class="card">
+        <div class="hero-icon">💌</div>
+        <h1 class="title">Xin chào Kiuco ❤️</h1>
+        <p class="subtitle">
+          Nay e làm có mệt hong?<br />
+          Đây là thư mời đi date từ DTruong.<br />
+          Mai mình gặp nha nhớ lắm ròi✨
+        </p>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="goToPage(2)">
+            💖 Đồng ý
+          </button>
+          <button
+            class="btn btn-secondary btn-runaway"
+            id="btnNo"
+            onclick="handleNo()"
+            onmouseover="runAway()"
+          >
+            🙈 Không đồng ý
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 2: Time -->
+    <section id="page2" class="page">
+      <div class="card">
+        <div class="hero-icon">⏰</div>
+        <h1 class="title">Kiuco muốn a xún mấy giờ?</h1>
+        <div class="grid-options" id="timeGrid">
+          <div class="option-card" data-time="09:00" onclick="selectTime(this)">
+            <span class="emoji">🌤️</span>
+            <span>09:00</span>
+          </div>
+          <div class="option-card" data-time="11:00" onclick="selectTime(this)">
+            <span class="emoji">🍱</span>
+            <span>11:00</span>
+          </div>
+          <div class="option-card" data-time="15:00" onclick="selectTime(this)">
+            <span class="emoji">☀️</span>
+            <span>15:00</span>
+          </div>
+          <div class="option-card" data-time="17:00" onclick="selectTime(this)">
+            <span class="emoji">🌇</span>
+            <span>17:00</span>
+          </div>
+          <div class="option-card" data-time="19:00" onclick="selectTime(this)">
+            <span class="emoji">🌙</span>
+            <span>19:00</span>
+          </div>
+        </div>
+        <div class="time-picker-wrapper">
+          <span style="color: var(--text-light); font-size: 14px"
+            >Hoặc chọn giờ khác:</span
+          >
+          <input
+            type="time"
+            class="time-picker"
+            id="customTime"
+            onchange="selectCustomTime(this)"
+          />
+        </div>
+        <div class="nav-buttons">
+          <button class="btn btn-back" onclick="goToPage(1)">Quay lại</button>
+          <button
+            class="btn btn-primary"
+            id="btnTimeNext"
+            onclick="goToPage(3)"
+            disabled
+          >
+            Tiếp tục
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 3: Food -->
+    <section id="page3" class="page">
+      <div class="card">
+        <div class="hero-icon">🍜</div>
+        <h1 class="title">Mình ăn gì đây ta?</h1>
+        <div class="grid-options" id="foodGrid">
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">🍲</span>
+            <span>Lẩu bò</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">🍕</span>
+            <span>Pizza</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">🍜</span>
+            <span>Mì cay</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">🍗</span>
+            <span>Gà rán</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">🥩</span>
+            <span>Beefsteak</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">💩</span>
+            <span>Cít</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">🍚</span>
+            <span>Cơm tấm</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'food')">
+            <span class="emoji">👨</span>
+            <span>Anh</span>
+          </div>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn btn-back" onclick="goToPage(2)">Quay lại</button>
+          <button
+            class="btn btn-primary"
+            id="btnFoodNext"
+            onclick="goToPage(4)"
+            disabled
+          >
+            Tiếp tục
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 4: Place -->
+    <section id="page4" class="page">
+      <div class="card">
+        <div class="hero-icon">🎡</div>
+        <h1 class="title">Ăn xong đi đâu đây he?</h1>
+        <div class="grid-options" id="placeGrid">
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">🎬</span>
+            <span>Xem phim</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">🧋</span>
+            <span>Cafe</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">😋</span>
+            <span>Jolibi</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">✍️</span>
+            <span>Tô tượng</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">🌳</span>
+            <span>Công viên</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">🛍️</span>
+            <span>Dạo trung tâm thương mại</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">🎤</span>
+            <span>Karaoke</span>
+          </div>
+          <div class="option-card" onclick="toggleMulti(this, 'place')">
+            <span class="emoji">🤭</span>
+            <span>Lụm</span>
+          </div>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn btn-back" onclick="goToPage(3)">Quay lại</button>
+          <button
+            class="btn btn-primary"
+            id="btnPlaceNext"
+            onclick="goToPage(5)"
+            disabled
+          >
+            Tiếp tục
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 5: Confirm -->
+    <section id="page5" class="page">
+      <div class="card">
+        <div class="hero-icon">💕</div>
+        <h1 class="title">Vậy là mình chốt nhaaa ❤️</h1>
+        <div
+          style="
+            text-align: left;
+            margin-top: 20px;
+            background: var(--secondary);
+            padding: 20px;
+            border-radius: 20px;
+          "
+        >
+          <div class="summary-item">
+            <span class="summary-label">📅 Thời gian:</span>
+            <span class="summary-value" id="summaryTime">--</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">🍜 Món ăn:</span>
+            <span class="summary-value" id="summaryFood">--</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">🎡 Địa điểm:</span>
+            <span class="summary-value" id="summaryPlace">--</span>
+          </div>
+        </div>
+        <p class="subtitle" style="margin-top: 20px">
+          Cảm ơn Kiuco đã đồng ý lời mời của DTruong 💖<br />
+          iu lắmmm.<br />
+          Mai gặp nhaaa ✨
+        </p>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="finish()">
+            💌 Hoàn thành
+          </button>
+        </div>
+        <div id="finalMessage" class="final-message" style="display: none">
+          🎉 Date đã được xác nhận thành công ❤️
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // State
+      let state = {
+        time: null,
+        food: [],
+        place: [],
+      };
+
+      // Navigation
+      function goToPage(pageNum) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("page" + pageNum).classList.add("active");
+        if (pageNum === 5) updateSummary();
+      }
+
+      // Page 1: No button runaway
+      function runAway() {
+        const btn = document.getElementById("btnNo");
+        const card = btn.closest(".card");
+        const rect = card.getBoundingClientRect();
+        const maxX = rect.width - btn.offsetWidth - 20;
+        const maxY = rect.height - btn.offsetHeight - 20;
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      }
+
+      function handleNo() {
+        alert("Bạn chắc chưa? 😢");
+        setTimeout(() => {
+          goToPage(2);
+        }, 500);
+      }
+
+      // Page 2: Time selection
+      function selectTime(el) {
+        document
+          .querySelectorAll("#timeGrid .option-card")
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+        state.time = el.getAttribute("data-time");
+        document.getElementById("customTime").value = "";
+        document.getElementById("btnTimeNext").disabled = false;
+      }
+
+      function selectCustomTime(input) {
+        if (input.value) {
+          document
+            .querySelectorAll("#timeGrid .option-card")
+            .forEach((c) => c.classList.remove("selected"));
+          state.time = input.value;
+          document.getElementById("btnTimeNext").disabled = false;
+        }
+      }
+
+      // Page 3 & 4: Multi select
+      function toggleMulti(el, type) {
+        el.classList.toggle("selected");
+        const items = Array.from(
+          document.querySelectorAll("#" + type + "Grid .option-card.selected"),
+        ).map((c) => {
+          // Get text content excluding emoji span
+          const textSpan = c.querySelector("span:not(.emoji)");
+          return textSpan ? textSpan.innerText : c.innerText;
+        });
+        state[type] = items;
+
+        const btnNext =
+          type === "food"
+            ? document.getElementById("btnFoodNext")
+            : document.getElementById("btnPlaceNext");
+        btnNext.disabled = items.length === 0;
+      }
+
+      // Page 5: Summary
+      function updateSummary() {
+        document.getElementById("summaryTime").textContent = state.time || "--";
+        document.getElementById("summaryFood").textContent = state.food.length
+          ? state.food.join(", ")
+          : "--";
+        document.getElementById("summaryPlace").textContent = state.place.length
+          ? state.place.join(", ")
+          : "--";
+      }
+
+      // Finish
+      function finish() {
+        createConfetti();
+        document.getElementById("finalMessage").style.display = "block";
+      }
+
+      // Confetti
+      function createConfetti() {
+        const container = document.getElementById("confetti-container");
+        container.innerHTML = "";
+        const colors = [
+          "#FF6B9D",
+          "#FFE5EC",
+          "#FFD166",
+          "#FFA6C1",
+          "#FF8FAB",
+          "#FFC8DD",
+        ];
+        for (let i = 0; i < 100; i++) {
+          const conf = document.createElement("div");
+          conf.classList.add("confetti");
+          conf.style.left = Math.random() * 100 + "vw";
+          conf.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+          conf.style.animationDuration = Math.random() * 2 + 2 + "s";
+          conf.style.animationDelay = Math.random() * 1 + "s";
+          conf.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+          container.appendChild(conf);
+        }
+        setTimeout(() => {
+          container.innerHTML = "";
+        }, 4000);
+      }
+
+      // Floating Hearts
+      function createHeart() {
+        const container = document.getElementById("hearts-container");
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 16 + 14 + "px";
+        heart.style.animationDuration = Math.random() * 4 + 4 + "s";
+        container.appendChild(heart);
+        setTimeout(() => {
+          heart.remove();
+        }, 8000);
+      }
+
+      setInterval(createHeart, 800);
+
+      // SoundCloud Widget
+      let scWidget = null;
+      window.addEventListener("load", function () {
+        const iframe = document.getElementById("sc-player");
+        if (iframe && window.SC && SC.Widget) {
+          scWidget = SC.Widget(iframe);
+          scWidget.setVolume(50);
+        }
+      });
+
+      // Music toggle
+      function toggleMusic() {
+        const btn = document.getElementById("musicToggle");
+        if (!scWidget) {
+          alert("Nhạc đang tải... Vui lòng thử lại sau 1 giây!");
+          return;
+        }
+        scWidget.isPaused(function (paused) {
+          if (paused) {
+            scWidget.play();
+            btn.innerText = "🎵";
+            btn.classList.remove("muted");
+          } else {
+            scWidget.pause();
+            btn.innerText = "🔇";
+            btn.classList.add("muted");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
